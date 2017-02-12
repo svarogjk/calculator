@@ -12,8 +12,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.init_ui()
 
-        self._expression = ''
-
         self.base_buttons = [
             self.button_7, self.button_8, self.button_9,
             self.button_4, self.button_5, self.button_6,
@@ -52,29 +50,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
     def on_base_button_clicked(self):
-        _sender = self.sender().text()
-        self._expression += _sender
-        self.expressionLineEdit.setText(self._expression)
+        self.expressionLineEdit.insert(self.sender().text())
 
 
     def on_trigonometric_button_clicked(self):
-        _sender = self.sender().text()
-        self._expression += _sender + '('
-        self.expressionLineEdit.setText(self._expression)
+        self.expressionLineEdit.insert(self.sender().text() + '(')
 
 
     def on_button_back_clicked(self):
-        self._expression = self._expression[:-1]
-        self.expressionLineEdit.setText(self._expression)
+        self.expressionLineEdit.backspace()
 
 
     def on_button_clear_clicked(self):
-        self._expression = ''
-        self.expressionLineEdit.setText(self._expression)
+        self.expressionLineEdit.clear()
 
 
     def on_button_clear_hist_clicked(self):
-        self.historyTextEdit.setText('')
+        self.historyTextEdit.clear()
 
 
     def on_button_equals_clicked(self):
@@ -82,7 +74,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             _expression = self.expressionLineEdit.text()
             _result = eval(_expression)
             self.historyTextEdit.append(_expression + '=' + str(_result))
-            self._expression = str(_result)
             self.expressionLineEdit.setText(str(_result))
         except SyntaxError:
             self.on_button_clear_clicked()
